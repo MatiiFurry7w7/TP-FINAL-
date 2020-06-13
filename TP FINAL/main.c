@@ -50,6 +50,7 @@ stCliente copiaCliente(int dni);
 stCliente cargarCliente();
 stCliente cargarModificado(stCliente c);
 stCliente copiarClienteDelArchivo(int id);
+stCliente buscaUnClienteDNI(int dni);
 int devolverIdXDNI(int dni);
 int buscapos(int id);
 int nuevoId();
@@ -57,6 +58,7 @@ void guardarNuevoCliente(stCliente c);
 void modificaCliente(stCliente c);
 void menuDarDeBaja ();
 void modificarDatosCliente(int dni);
+void menact();
 
 void ordenarClientesBaja(stCliente c[], int v);	/// seleccion
 int posMenorEmail(stCliente c[], int v, int pos);
@@ -112,6 +114,7 @@ int main()
                     printf("\n\n\n");
                     system("pause");
                     break;
+
                 case 51: /// opcion 3
                     printf("\t\t\t\t<<<<---MODIFICACION DE CLIENTES--->>>");
                     printf("\n\nIngrese DNI del usuario a Modificar: ");
@@ -124,17 +127,53 @@ int main()
 
                 case 52: /// opcion 4
                     printf("\t\t\t\t<<<<---LISTAR CLIENTES ACTIVOS--->>>");
-                    muestraClientes();
+
+                    do                           ///MENU ACTIVOS///
+                    {
+                        system("cls");
+                        menact();
+                        opcion = getch();
+                        system("cls");
+
+                        switch (opcion)
+                        {
+                        case 49: /// opcion 1
+                            printf("\t\t\t\t<<<<---ORDENADOS POR DNI--->>>");
+
+                            printf("\n\n\n");
+                            system("pause");
+                            break;
+
+                        case 50: /// opcion 2
+                            printf("\t\t\t\t<<<<---ORDENADOS POR APELLIDO--->>>");
+
+                            printf("\n\n\n");
+                            system("pause");
+                            break;
+
+                        case 51: /// opcion 3
+                            printf("\t\t\t\t<<<<---BUSCAR UN CLIENTE--->>>");
+                            printf("\n\nIngrese DNI del usuario a Buscar: ");
+                            scanf("%d", &dni);
+
+                            buscarCliente(dni);
+
+                            printf("\n\n\n");
+                            system("pause");
+                            break;
+                        }
+
+                    }
+                    while (opcion!='5' && opcion!='6');
                     printf("\n\n\n");
-                    system("pause");
-                    break;
+                    break;                            ///MENU ACTIVOS///
+
                 case 53: /// opcion 5
-                    printf("\t\t\t\t<<<<---LISTAR CLIENTES INACTIVOS POR E-MAIL--->>>");
+                    printf("\t\t\t\t<<<<---LISTAR CLIENTES INACTIVOS POR E-MAIL--->>>\n\n");
                     listarClientesEnBaja();
                     printf("\n\n\n");
                     system("pause");
                     break;
-
                 }
 
             }
@@ -180,6 +219,7 @@ int main()
                     printf("\n\n\n");
                     system("pause");
                     break;
+
                 case 53: /// opcion 5
                     printf("\t\t\t\t<<<<---ESTADISTICAS DE LOS CONSUMOS--->>>");
 
@@ -199,7 +239,7 @@ int main()
     system("cls");
     system("color a");
     printf("\n\n\n\n\n\n\n\t\t\t<<<<---GRACIAS POR ELEGIR UT MOVIL, ESPERAMOS VERLO/A PRONTO!--->>>\n\n\n\n\n\n\n\n\n\n\n");
-      puts("\n\n\n\n\t------------------------------------------------------------------------------------------------------\n");
+    puts("\n\n\n\n\t------------------------------------------------------------------------------------------------------\n");
     printf("\tCOMICOS CUBICOS. TM - 2020");
     getch();
     system("cls");
@@ -216,14 +256,14 @@ void menu()
     printf("\t-----------------\n\n\n");
     printf("\t[1] - CLIENTES.\n\n");
     printf("\t[2] - CONSUMOS.\n\n");
-      puts("\n\n\n\t------------------------------------------------------------------------------\n");
+    puts("\n\n\t------------------------------------------------------------------------------\n");
     printf("\tCOMICOS CUBICOS. TM - 2020");
     printf("\t\t\t\t\t[ESC] TO QUIT.");
 }
 
 void subcli()
 {
-    printf("\n\n\t\t\t\t<<<<---UT Movil - SUBMENU CLIENTES--->>>\n\n\n\n");
+    printf("\n\n\t\t\t    <<<<---UT Movil - SUBMENU CLIENTES--->>>\n\n\n\n");
     printf("\tSelect an option.\n");
     printf("\t-----------------\n\n");
     printf("\t[1] - ALTA DE CLIENTES.\n");
@@ -238,7 +278,7 @@ void subcli()
 
 void subcon()
 {
-    printf("\n\n\t\t\t\t<<<<---UT Movil - SUBMENU CONSUMOS--->>>\n\n\n\n");
+    printf("\n\n\t\t\t    <<<<---UT Movil - SUBMENU CONSUMOS--->>>\n\n\n\n");
     printf("\tSelect an option.\n");
     printf("\t-----------------\n\n");
     printf("\t[1] - ALTA DE CONSUMO.\n");
@@ -249,6 +289,19 @@ void subcon()
       puts("\n\n\t------------------------------------------------------------------------------\n");
     printf("\tCOMICOS CUBICOS. TM - 2020");
     printf("\t\t\t      [6] RETURN TO MAIN MENU.");
+}
+
+void menact()
+{
+    printf("\n\n\t\t\t     <<<<---MOSTRAR CLIENTES ACTIVOS--->>>\n\n\n\n");
+    printf("\tSelect an option.\n");
+    printf("\t-----------------\n\n");
+    printf("\t[1] - ORDENADOS POR DNI.\n");
+    printf("\t[2] - ORDENADOS POR APELLIDO.\n");
+    printf("\t[3] - BUSCAR CLIENTE ESPECIFICO.\n\n\n");
+      puts("\n\n\t------------------------------------------------------------------------------\n");
+    printf("\tCOMICOS CUBICOS. TM - 2020");
+    printf("    [5] RETURN TO SUBMENU   [6] RETURN TO MAIN MENU.");
 }
 
 /// FUNCIONES ///
@@ -778,9 +831,9 @@ int posMenorEmail(stCliente c[], int v, int pos) /// BUSCAR MENOR ///
     return posMenor;
 }
 
-void listarClientesEnBaja()              ///LISTAR BAJA ///
+void listarClientesEnBaja()                      /// LISTAR BAJA ///
 {
-    stCliente c[30];
+    stCliente c[100];
     int v=0, i=0;
 
     v=copiarBajas2Arr(c, v);
@@ -796,7 +849,7 @@ void listarClientesEnBaja()              ///LISTAR BAJA ///
     }
 }
 
-void ordenarClientesBaja(stCliente c[], int v)	/// seleccion
+void ordenarClientesBaja(stCliente c[], int v)    /// SELECCION ///
 {
     int i, posMenor;
     stCliente aux;
@@ -810,6 +863,74 @@ void ordenarClientesBaja(stCliente c[], int v)	/// seleccion
         i++;
     }
 }
+
+/*
+void listarClientesDNI()
+{
+    stCliente c[100];
+    int v=0, i=0;
+
+    v=copiarPorDNI2Arr(c, v);
+
+    ordenarClientesDNI(c, v);
+
+    printf("Clientes ordenados por DNI: \n");
+
+    while(i<v)
+    {
+        mostrarCliente(c[i]);
+        i++;
+    }
+}
+*/
+
+stCliente buscaUnClienteDNI(int dni)
+{
+    int flag = 0;
+    stCliente c;
+
+    FILE *pArchCliente = fopen(FILECL, "rb");
+    if(pArchCliente)
+    {
+     while(flag == 0 && fread(&c, sizeof(stCliente),1,pArchCliente) > 0)
+     {
+        if(c.dni == dni)
+        {
+         flag = 1;
+         return c;
+        }
+     }
+
+     if(flag == 0)
+     {
+        c.dni = -1;
+        return c;
+     }
+
+     fclose(pArchCliente);
+    }
+}
+
+void buscarCliente(int dni)
+{
+  stCliente c;
+  stCliente flag = buscaUnClienteDNI(dni);
+
+  if(flag.dni >= 0)
+  {
+   mostrarCliente(flag);
+  }
+  else
+  {
+    printf("\n\nNo se encontro el DNI ingresado\n");
+  }
+}
+
+
+
+
+
+
 
 /*
 void archi2pila (Pila *p)
